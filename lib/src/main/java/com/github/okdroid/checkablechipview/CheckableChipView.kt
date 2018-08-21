@@ -40,11 +40,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Checkable
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
-import androidx.core.content.res.getColorOrThrow
-import androidx.core.content.res.getDimensionOrThrow
-import androidx.core.content.res.getDimensionPixelSizeOrThrow
-import androidx.core.content.res.getDrawableOrThrow
-import androidx.core.content.res.getStringOrThrow
+import androidx.core.content.res.*
 import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
@@ -105,10 +101,6 @@ class CheckableChipView @JvmOverloads constructor(
      */
     var outlineCornerRadius: Float? by viewProperty(null)
 
-    /**
-     * Sets the listener to be called when the checked state changes.
-     */
-    var onCheckedChangeListener: ((view: CheckableChipView, checked: Boolean) -> Unit)? = null
 
     private var progress: Float by viewProperty(0f) {
         if (it == 0f || it == 1f) {
@@ -125,6 +117,8 @@ class CheckableChipView @JvmOverloads constructor(
     private lateinit var touchFeedbackDrawable: Drawable
 
     private lateinit var textLayout: StaticLayout
+
+    private var onCheckedChangeListener: ((view: CheckableChipView, checked: Boolean) -> Unit)? = null
 
     private val progressAnimator: ValueAnimator by lazy {
         ValueAnimator.ofFloat().apply {
@@ -294,6 +288,10 @@ class CheckableChipView @JvmOverloads constructor(
 
         // Touch feedback
         touchFeedbackDrawable.draw(canvas)
+    }
+
+    fun setOnCheckedChangeListener(onCheckedChangeListener: ((view: CheckableChipView, checked: Boolean) -> Unit)?) {
+        this.onCheckedChangeListener = onCheckedChangeListener
     }
 
     /**
